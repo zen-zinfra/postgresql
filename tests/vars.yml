@@ -1,6 +1,6 @@
 ---
 
-postgresql_version: 9.5
+postgresql_version: 9.1
 
 postgresql_databases:
   - name: foobar
@@ -12,3 +12,5 @@ postgresql_users:
 postgresql_user_privileges:
   - name: baz
     db: foobar
+
+postgresql_shared_buffers: 32MB

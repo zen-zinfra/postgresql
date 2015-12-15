@@ -4,6 +4,8 @@ language: python
 python: "2.7"
 
 env:
+  - POSTGRESQL_VERSION=9.1
+  - POSTGRESQL_VERSION=9.2
   - POSTGRESQL_VERSION=9.3
   - POSTGRESQL_VERSION=9.4
   - POSTGRESQL_VERSION=9.5
@@ -34,4 +36,3 @@ script:
 
   # Idempotence test
   - ansible-playbook -i inventory tests/playbook.yml --connection=local --sudo -e "postgresql_version=$POSTGRESQL_VERSION" > idempotence_out
-  - ./tests/idempotence_check.sh idempotence_out
