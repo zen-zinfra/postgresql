@@ -1,10 +1,14 @@
 ---
-blah: one
+
+postgresql_version: 9.5
+
 postgresql_databases:
   - name: foobar
+
 postgresql_users:
   - name: baz
     pass: pass
+
 postgresql_user_privileges:
   - name: baz
     db: foobar
