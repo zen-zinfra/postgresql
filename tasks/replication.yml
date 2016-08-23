@@ -1,0 +1,54 @@
+- name: Ensure replication role is present
+  postgresql_user:
+    state: present
+    name: "{{ postgresql_replication_user.name }}"
+    password: "{{ postgresql_replication_user.password }}"
+    role_attr_flags: "{{ postgresql_replication_user.roles }}"
+  when: pg_replication_role == 'master'
+
+- name: Ensure .pgpass is ready
+  template:
+    src: pgpass.j2
+    dest: '/var/lib/{{ postgresql_varlib_directory_name }}/.pgpass'
+    owner: postgres
+    group: postgres
+    mode: 0640
+  when: pg_replication_role== 'slave'
+
+- name: Ensure .pgpass has right permissions
+  file: path='/var/lib/{{ postgresql_varlib_directory_name }}/.pgpass' state=file mode=0600
+  when: pg_replication_role== 'slave'
+
+- name: Check if the standby is already configured by checking if recovery.conf is present
+  stat: path="{{ postgresql_data_directory }}/recovery.conf"
+  register: recovery_conf
+  when: pg_replication_role== 'slave'
+
+- name: Stop PostgreSQL if necessary
+  service: name={{ postgresql_service_name }} state=stopped
+  when: pg_replication_role== 'slave' and
+        (not recovery_conf.stat.exists is defined or not recovery_conf.stat.exists)
+
+- name: Ensure the data directory is empty
+  file: path={{ postgresql_data_directory }} state=absent
+  when: pg_replication_role== 'slave' and
+        (not recovery_conf.stat.exists is defined or not recovery_conf.stat.exists)
+
+- name: Ensure the base backup is retrieved
+  command: pg_basebackup -h "{{ postgresql_master_ip }}" -D "{{ postgresql_data_directory }}" -U "{{ postgresql_replication_user.name }}"
+  become: true
+  become_user: postgres
+  when: pg_replication_role== 'slave' and
+        (not recovery_conf.stat.exists is defined or not recovery_conf.stat.exists)
+
+- name: Ensure the recovery.conf file is configured
+  template:
+    src: recovery.conf.j2
+    dest: "{{ postgresql_data_directory }}/recovery.conf"
+    owner: postgres
+    group: postgres
+    mode: 0640
+  when: pg_replication_role== 'slave'
+
+- name: Start PostgreSQL if necessary
+  service: name={{ postgresql_service_name }} state=started

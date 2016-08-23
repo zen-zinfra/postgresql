@@ -41,3 +41,7 @@ host  all  all  {{host}}  trust
 {% endif %}
 {{connection.type}}  {{connection.database}}  {{connection.user}}  {{connection.address}}  {{connection.method}}
 {% endfor %}
+
+{% for standby_ip in postgresql_standby_ips %}
+host    replication     {{ postgresql_replication_user.name }}        {{ standby_ip }}/32      md5
+{% endfor %}

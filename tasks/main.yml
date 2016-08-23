@@ -32,3 +32,5 @@
 - include: monit.yml
   when: monit_protection is defined and monit_protection == true
   tags: [postgresql, postgresql-monit]
+
+- include: replication.yml
