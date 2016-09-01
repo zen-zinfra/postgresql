@@ -26,6 +26,7 @@
   environment: "{{ postgresql_env }}"
   with_items:
     - "postgresql{{ postgresql_version_terse }}-server"
+    - "postgresql{{ postgresql_version_terse }}-contrib"
     - "postgresql{{ postgresql_version_terse }}"
 
 - name: PostgreSQL | PGTune
