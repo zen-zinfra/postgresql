@@ -14,6 +14,6 @@
   mount:
     name: /var/lib/{{ postgresql_varlib_directory_name }}
     src: /dev/{{ postgresql_vg_name }}/{{ postgresql_lv_data_name }}
-    fstype: ext4
+    fstype: "{{ postgresql_lv_data_fstype }}"
     opts: "defaults,relatime"
     state: mounted
