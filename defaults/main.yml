@@ -6,7 +6,7 @@ postgresql_vg_data_name: rootvg
 postgresql_lv_data_name: pg_data
 postgresql_lv_data_size: 10G
 postgresql_lv_data_fstype: ext4
-postgresql_lv_data_fs_opts:"defaults,relatime"
+postgresql_lv_data_fs_opts: "defaults,relatime"
 
 # Basic settings
 postgresql_version: 9.3
