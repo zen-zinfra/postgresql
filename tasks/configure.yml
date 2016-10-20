@@ -1,4 +1,9 @@
 # file: postgresql/tasks/configure.yml
+- name: PostgreSQL | Stop PostgreSQL for SQL
+  service:
+    name: "{{ postgresql_service_name }}"
+    state: stopped
+  when: postgresql_cluster_reset
 
 - name: PostgreSQL | Drop the data directory | RedHat
   file:
