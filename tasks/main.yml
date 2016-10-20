@@ -6,6 +6,10 @@
     - "../vars/empty.yml"
   tags: [always]
 
+- include: lvm_partionning.yml
+  when: postgresql_use_lvm
+  tags: [postgresql, postgresql-lvm]
+
 - include: install.yml
   when: ansible_pkg_mgr == "apt"
   tags: [postgresql, postgresql-install]
@@ -34,3 +38,4 @@
   tags: [postgresql, postgresql-monit]
 
 - include: replication.yml
+  tags: [postgresql, postgresql-replication]

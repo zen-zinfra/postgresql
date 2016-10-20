@@ -12,11 +12,7 @@
     dest: '/var/lib/{{ postgresql_varlib_directory_name }}/.pgpass'
     owner: postgres
     group: postgres
-    mode: 0640
-  when: pg_replication_role== 'slave'
-
-- name: Ensure .pgpass has right permissions
-  file: path='/var/lib/{{ postgresql_varlib_directory_name }}/.pgpass' state=file mode=0600
+    mode: 0600
   when: pg_replication_role== 'slave'
 
 - name: Check if the standby is already configured by checking if recovery.conf is present

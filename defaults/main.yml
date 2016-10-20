@@ -1,5 +1,11 @@
 # file: postgresql/defaults/main.yml
 
+# LVM partionning
+postgresql_use_lvm: false
+postgresql_vg_data_name: rootvg
+postgresql_lv_data_name: pg_data
+postgresql_lv_data_size: 10G
+
 # Basic settings
 postgresql_version: 9.3
 postgresql_encoding: 'UTF-8'

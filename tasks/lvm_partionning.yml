@@ -1,0 +1,19 @@
+- name: create postgresql {{ postgresql_lv_data_name }} lv
+  lvol: vg={{ postgresql_vg_data_name }} lv={{ postgresql_lv_data_name }} size={{ postgresql_lv_data_size }}
+
+- name: create fs on lv {{ postgresql_lv_data_name }}
+  filesystem: fstype=ext4 dev=/dev/{{ postgresql_vg_data_name }}/{{ postgresql_lv_data_name }}
+
+- name: create directory /var/lib/{{ postgresql_varlib_directory_name }}
+  file:
+    path: /var/lib/{{ postgresql_varlib_directory_name }}
+    state: directory
+    mode: 0755
+
+- name: mount lv pg_xlog to /var/lib/{{ postgresql_varlib_directory_name }}
+  mount:
+    name: /var/lib/{{ postgresql_varlib_directory_name }}
+    src: /dev/{{ postgresql_vg_name }}/{{ postgresql_lv_data_name }}
+    fstype: ext4
+    opts: "defaults,relatime"
+    state: mounted
