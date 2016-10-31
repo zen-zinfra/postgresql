@@ -1,0 +1,12 @@
+- name: PostgreSQL | Create keepalived scripts directory to deploy postgresql scripts
+  file: path={{ postgresql_keepalived_dir_scripts}} state=directory owner=root group=root mode=555
+
+- name: PostgreSQL | Copy postgresql scripts for keepalived
+  template:
+    src: "{{item}}"
+    dest: "{{postgresql_keepalived_dir_scripts}}/{{ item.split('/')[-1].split('.')[0]}}.{{ item.split('/')[-1].split('.')[1]}}"
+    owner: root
+    group: root
+    mode: 0754
+  with_fileglob:
+    - templates/keepalived_scripts/*

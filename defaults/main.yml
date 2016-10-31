@@ -8,6 +8,10 @@ postgresql_lv_data_size: 10G
 postgresql_lv_data_fstype: ext4
 postgresql_lv_data_fs_opts: "defaults,relatime"
 
+# keepalived link
+postgresql_with_keepalived: false
+postgresql_keepalived_dir_scripts: "/etc/keepalived/scripts"
+
 # Basic settings
 postgresql_version: 9.3
 postgresql_encoding: 'UTF-8'

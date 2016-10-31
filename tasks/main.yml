@@ -39,3 +39,7 @@
 
 - include: replication.yml
   tags: [postgresql, postgresql-replication]
+
+- include: keepalived.yml
+  when: postgresql_with_keepalived
+  tags: [postgresql, postgresql-keepalived]
